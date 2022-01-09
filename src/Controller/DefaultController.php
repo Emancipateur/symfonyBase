@@ -98,7 +98,7 @@ class DefaultController extends AbstractController
      * @param ArticlesRepository $articlesRepository
      * @return void
      */
-    public function showArticles(ArticlesRepository $articlesRepository, ManagerRegistry $managerRegistry)
+    public function showArticles(ArticlesRepository $articlesRepository)
     {
         $articles = $articlesRepository->findall();
 
@@ -106,9 +106,20 @@ class DefaultController extends AbstractController
         $article->getCategory()->getTitle();
     
         }
-
-
         return $this->render('default/showArticles.html.twig',["articles" => $articles]);
+    }
+
+
+    /**
+     * @Route("/showarticle/{id}")
+     * @param ArticlesRepository $articlesRepository
+     * @return void
+     */
+    public function showArticle($id, ArticlesRepository $articlesRepository)
+    {
+        $article = $articlesRepository->findById($id);
+
+        return $this->render('default/showArticle.html.twig',["article" => $article[0]]);
     }
 }
 

@@ -2,13 +2,11 @@
 {% block body %}
 
 
-{% for article in articles %}
+
+
 <h1>{{article.title}}</h1>
 <p>{{article.content}}</p>
 <p>Autheur : {{article.author}}</p>
     <p>Catégorie : {{article.category.title}}  </p>
-   {{ article.id}}
-     <a href="{{ path('app_default_showarticle', {'id': article.id}) }}">{{ article.title }}</a>
-{% endfor %}
 
 {% endblock %}
