@@ -34,11 +34,11 @@ class DefaultController extends AbstractController
     public function createArticle( ManagerRegistry $managerRegistry)
     {
         $articles = new Articles;
-        $articles->setTitle('Mon Première article');
-        $articles->setContent('Ici le contenu du 1er article');
-        $articles->setAuthor('Kevin');
+        $articles->setTitle('Mon Deuxième article');
+        $articles->setContent('Ici le contenu du 2ème article');
+        $articles->setAuthor('Ilan');
 
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $managerRegistry->getManager();
 
         $entityManager->persist($articles);
         $entityManager->flush();
@@ -47,19 +47,17 @@ class DefaultController extends AbstractController
             Article crée
         </body>');
     }
- /**
+    /**
      * 
      *@Route("/createCategory")
-    
-     
      */
     public function createCategory( ManagerRegistry $managerRegistry)
     {
         $articles = new Category;
-        $articles->setTitle('PHP');
+        $articles->setTitle('JS');
       
 
-        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager = $managerRegistry->getManager();
 
         $entityManager->persist($articles);
         $entityManager->flush();
@@ -72,26 +70,46 @@ class DefaultController extends AbstractController
 
 
 /**
- * @Route("/update")
+ * @Route("/update/{id}")
  * @param ArticlesRepository $articlesRepository
  * @param ManagerRegistry $doctrine
  *
  */
-    public function updateArticle(ArticlesRepository $articlesRepository,ManagerRegistry $doctrine,CategoryRepository $categoryRepository)
+    public function updateArticle($id,ArticlesRepository $articlesRepository,ManagerRegistry $managerRegistry,CategoryRepository $categoryRepository)
     {
-        $entityManager = $doctrine->getManager();
-        $article= $articlesRepository->findBytitle('Mon Première article');
-        $category = $categoryRepository->findOneById(1);
-        
- 
+        $entityManager = $managerRegistry->getManager();
+        $article= $articlesRepository->findById($id);
+        $category = $categoryRepository->findOneById(2);
+       
         foreach ($article as $value) {
           $value->setCategory($category);
         }
 
         $entityManager->flush();
-        dump($article);
+
             return new Response('<body>
                 update
             </body>');
     }
+
+
+    /**
+     * @Route("/showarticles")
+     * @param ArticlesRepository $articlesRepository
+     * @return void
+     */
+    public function showArticles(ArticlesRepository $articlesRepository, ManagerRegistry $managerRegistry)
+    {
+        $articles = $articlesRepository->findall();
+
+        foreach ($articles as $article){
+        $article->getCategory()->getTitle();
+    
+        }
+
+
+        return $this->render('default/showArticles.html.twig',["articles" => $articles]);
+    }
 }
+
+
