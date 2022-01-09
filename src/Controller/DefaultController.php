@@ -67,8 +67,6 @@ class DefaultController extends AbstractController
         </body>');
     }
 
-
-
 /**
  * @Route("/update/{id}")
  * @param ArticlesRepository $articlesRepository
@@ -104,6 +102,7 @@ class DefaultController extends AbstractController
 
         foreach ($articles as $article){
         $article->getCategory()->getTitle();
+        dump($article);
     
         }
         return $this->render('default/showArticles.html.twig',["articles" => $articles]);
@@ -121,6 +120,30 @@ class DefaultController extends AbstractController
 
         return $this->render('default/showArticle.html.twig',["article" => $article[0]]);
     }
+
+        /**
+     * @Route("/showcategory")
+     */
+    public function showCategory(CategoryRepository $categoryRepository)
+    {
+        $category = $categoryRepository->findall();
+     
+        
+        return $this->render('default/showCategory.html.twig',["category" => $category]);
+    }
+    /** 
+    * @Route("/showcategory/{id}")
+    */
+   public function showOneCategory($id, CategoryRepository $categoryRepository)
+   {
+       $category = $categoryRepository->find($id);
+       $article =  $category->getArticles();
+             
+       return $this->render('default/showOneCategory.html.twig',["category" => $article[0]]);
+   }
+
+
 }
+
 
 
