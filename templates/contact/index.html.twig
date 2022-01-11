@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+{% block body %}
+{% for message in app.flashes('Message') %}
+    <div>
+        {{ message }}
+    </div>
+{% endfor %}
+{{form_start(contact)}}
+<input type="submit">
+{{form_end(contact)}}
+{% endblock %}
