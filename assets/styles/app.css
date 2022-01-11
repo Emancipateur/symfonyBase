@@ -1,0 +1,11 @@
+body {
+    background-color: lightgray;
+}
+.formArticle{
+    display: flex;
+    justify-content: center;
+    align-items:center;
+  background-color: lightcyan;
+  font-size: 2rem;
+  height: 600px;
+}
