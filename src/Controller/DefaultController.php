@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
+use App\Form\UserType;
 use App\Entity\Articles;
 use App\Entity\Category;
 use App\Repository\ArticlesRepository;
 use App\Repository\CategoryRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 class DefaultController extends AbstractController
@@ -102,7 +104,6 @@ class DefaultController extends AbstractController
 
         foreach ($articles as $article){
         $article->getCategory()->getTitle();
-        dump($article);
     
         }
         return $this->render('default/showArticles.html.twig',["articles" => $articles]);
@@ -143,7 +144,27 @@ class DefaultController extends AbstractController
    }
 
 
-}
 
+
+/**
+ *@Route("/userForm")
+ */
+public function new(Request $request): Response
+{
+    $user = new User();
+
+    $form = $this->createForm(UserType::class, $user);
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        dd($user);
+    }
+
+ return $this->render('default/user.html.twig',["form" => $form->createView()]);
+
+
+}
+}
 
 
