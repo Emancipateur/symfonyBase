@@ -165,6 +165,18 @@ public function new(Request $request): Response
 
 
 }
+/**
+ * @Route("/search")
+ */
+    public function searchByTerm(Request $request, ArticlesRepository $articlesRepository)
+
+    {
+
+        $term = $request->query->get('q');
+       $articles = $articlesRepository->searchByTerm($term);
+        
+        return $this->render('default/search.html.twig',["articles" => $articles]);
+    }
 }
 
 

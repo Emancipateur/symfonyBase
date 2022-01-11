@@ -89,4 +89,9 @@ class Articles
 
         return $this;
     }
+
+    public function searchByTerm()
+    {
+        $queryBuilder = $this->createQueryBuilder('a');
+    }
 }
